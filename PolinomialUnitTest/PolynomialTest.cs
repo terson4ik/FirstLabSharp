@@ -49,48 +49,129 @@ namespace PolinomialTests
 
         //4
         [TestMethod()]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorFromNULLOneDimensionalArray()
         {
             // Arrange
             double[] coeff = null;
-            Polynomial p = new Polynomial(coeff);
+            Assert.ThrowsException<ArgumentNullException>(() => new Polynomial(coeff));
         }
 
         //5
         [TestMethod()]
         public void ConstructorFromTwoDimensionalArrayWithoutNulls()
         {
-         
+            double[,] coeff = new double[,] { { 2, 5 }, { 0, -1 } };
+            Polynomial p = new Polynomial(coeff); //expected [degree, coef.]
+            Assert.AreEqual(5, p.Elements[0].Coefficient);
+            Assert.AreEqual(-1, p.Elements[1].Coefficient);
+            Assert.AreEqual(2, p.Elements[0].Degree);
+            Assert.AreEqual(0, p.Elements[1].Degree);
         }
 
         //6
         [TestMethod()]
         public void ConstructorFromTwoDimensionalArrayWithNulls()
         {
-            // Arrange
-       
+            double[,] coeff = new double[0, 0];
+            Polynomial p = new Polynomial(coeff);
+            Assert.AreEqual(0, p.Elements.Length);                
         }
 
         //7
         [TestMethod()]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorFromNULLTwoDimensionalArray()
         {
-          
+            double[,] coeff = null;
+            Assert.ThrowsException<ArgumentNullException>(() => new Polynomial(coeff));
         }
-       
 
+        //8
+        [TestMethod()]
+        public void ConstructorFromTwoDimensionalArrayWithNotWholeFraction()
+        {
+            double[,] coeff = new double[,] { { 2.7, 5 }, { 2.3, 10 } }; //expected [degree, coef.]
+            Polynomial p = new Polynomial(coeff);
+            Assert.AreEqual(3, p.Elements[0].Degree);
+            Assert.AreEqual(5, p.Elements[0].Coefficient);
+            Assert.AreEqual(2, p.Elements[1].Degree);
+            Assert.AreEqual(10, p.Elements[1].Coefficient);
+        }
 
+        //9
+        [TestMethod()]
+        public void AddDefoltTest()
+        {
+        }
+        //9
+        public void AddEmptyPolynomsTest()
+        {
+        }
+        //10
+        [TestMethod()]
+        public void AddNullTest()
+        {
+        }
 
+        //11
+        [TestMethod()]
+        public void SubtractionDefoltTest()
+        {
+        }
+        //11
+        [TestMethod()]
+        public void SubtractionDifferntDegreeTest()
+        {
+        }
+        //12
+        [TestMethod()]
+        public void SubstractionSameTest()
+        {
+        }
 
+        //13
+        [TestMethod()]
+        public void MultiplyByNumberDefoltTest ()
+        {
+        }
 
+        //14
+        [TestMethod()]
+        public void MultiplyByZeroNumberTest()
+        {
+        }
+        //15
+        [TestMethod()]
+        public void AddNumberWithoutFreeMemberTest()
+        {
+        }
+        //16
+        [TestMethod()]
+        public void AddNumberWithFreeMemberTest()
+        {
+        }
 
+        //17
+        [TestMethod()]
+        public void CalculateValueDefoultTest()
+        {
+        }
 
+        //18
+        [TestMethod()]
+        public void CalculateValueWithZeroTest()
+        {
+        }
+        //19
+        [TestMethod()]
+        public void FindDerivativeDefoultTest()
+        {
+        }
 
-
-
-
+        //19
+        [TestMethod()]
+        public void FindDerivativeConstTest()
+        {
+        }
 
         [TestMethod()]
         public void EqualsTest()

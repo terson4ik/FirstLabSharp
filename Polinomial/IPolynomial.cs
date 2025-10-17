@@ -9,7 +9,7 @@ namespace Polinomial
 {
     internal interface IPolynomial
     {
-
+       Element[] Elements { get; }
         Polynomial Add(Polynomial secondPolynomial);
         Polynomial Subtraction(Polynomial secondPolynomial);
         Polynomial MultiplyByNumber(double num);

@@ -12,7 +12,7 @@ namespace Polinomial
         public double Coefficient;
         public int Degree;
     }
-    internal class Polynomial : IPolynomial
+    public class Polynomial : IPolynomial
     {
         private readonly Element[] elements;
         public Element[] Elements => elements;
@@ -71,7 +71,17 @@ namespace Polinomial
                 elements[index].Coefficient = coeff;
                 index++;
             }
-
+        }
+        private double GetCoefByDegree(int degree)
+        {
+            for (int i = 0; i < elements.Length; i++)
+            {
+                if (elements[i].Degree == degree)
+                {
+                    return elements[i].Coefficient;
+                }
+            }
+            return 0.0;
         }
         Polynomial IPolynomial.Add(Polynomial secondPolynomial)
         {

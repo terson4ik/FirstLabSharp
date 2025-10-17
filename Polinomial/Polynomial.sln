@@ -5,7 +5,7 @@ VisualStudioVersion = 17.13.35919.96
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "polynomial", "polynomial.csproj", "{D96BA451-9627-4316-8759-77E13B78FA6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolynomialWorkTest", "..\PolynomialWorkTest\PolynomialWorkTest.csproj", "{1DE089C3-3F00-47EE-A376-D54AA7B70F21}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolinomialUnitTest", "..\PolinomialUnitTest\PolinomialUnitTest.csproj", "{645E14A7-D353-4D45-B18E-91F6C62A9978}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{D96BA451-9627-4316-8759-77E13B78FA6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D96BA451-9627-4316-8759-77E13B78FA6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D96BA451-9627-4316-8759-77E13B78FA6A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1DE089C3-3F00-47EE-A376-D54AA7B70F21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1DE089C3-3F00-47EE-A376-D54AA7B70F21}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1DE089C3-3F00-47EE-A376-D54AA7B70F21}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1DE089C3-3F00-47EE-A376-D54AA7B70F21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{645E14A7-D353-4D45-B18E-91F6C62A9978}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{645E14A7-D353-4D45-B18E-91F6C62A9978}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{645E14A7-D353-4D45-B18E-91F6C62A9978}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{645E14A7-D353-4D45-B18E-91F6C62A9978}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

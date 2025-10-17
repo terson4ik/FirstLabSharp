@@ -67,6 +67,16 @@ namespace PolinomialTests
             Assert.AreEqual(2, p.Elements[0].Degree);
             Assert.AreEqual(0, p.Elements[1].Degree);
         }
+        //5
+        [TestMethod()]
+        public void ConstructorFromTwoDimensionalArrayWithSameDegrees()
+        {
+            double[,] coeff = new double[,] { { 2, 5 }, { 2, 5 }, { 2, 5 }, { 2, 5 } };
+            Polynomial p = new Polynomial(coeff); //expected [degree, coef.]
+            Assert.AreEqual(20, p.Elements[0].Coefficient);
+            Assert.AreEqual(2, p.Elements[0].Degree);
+            Assert.AreEqual(1, p.Elements.Length);
+        }
 
         //6
         [TestMethod()]
@@ -99,7 +109,11 @@ namespace PolinomialTests
 
         //9
         [TestMethod()]
-        public void AddDefoltTest()
+        public void AddPositiveTest()
+        {
+        }
+        [TestMethod()]
+        public void AddNegativeTest()
         {
         }
         //9
@@ -114,7 +128,10 @@ namespace PolinomialTests
 
         //11
         [TestMethod()]
-        public void SubtractionDefoltTest()
+        public void SubtractionPositiveTest()
+        {
+        }
+        public void SubtractionNegativeTest()
         {
         }
         //11
@@ -174,13 +191,44 @@ namespace PolinomialTests
         }
 
         [TestMethod()]
-        public void EqualsTest()
+        public void EqualsSamePolynomsTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void EqualsDifferentsPolynomsTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void EqualsNullTest()
+        {
+            Assert.Fail();
+        }
+        [TestMethod()]
+        public void EqualsAnotherTypeTest()
         {
             Assert.Fail();
         }
 
         [TestMethod()]
         public void ToStringTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void GetHashCodeSameTest()
+        {
+            Assert.Fail();
+        }
+        public void GetHashCodeDifferentTest()
+        {
+            Assert.Fail();
+        }
+        public void GetHashCodeAnotherTypeTest()
         {
             Assert.Fail();
         }

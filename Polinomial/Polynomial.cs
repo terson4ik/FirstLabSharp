@@ -258,7 +258,6 @@ namespace Polinomial
                 {
                     newElements[i].Coefficient += num;
                     foundZeroDegree = true;
-                    break;
                 }
             }
             if (!foundZeroDegree)
@@ -357,17 +356,32 @@ namespace Polinomial
             {
                 double coef = elements[i].Coefficient;
                 int degr = elements[i].Degree;
-                if ((i > 0) && (coef > 0))
-                    result += " + ";
-                else if (coef < 0)
-                    result += " - ";
-                result += coef;
+                if (coef == 0.0) continue;
+
+                // Первый элемент: просто знак если отрицательный
+                if (result == "")
+                {
+                    if (coef < 0)
+                        result += "-";
+                }
+                else
+                {
+                    result += coef > 0 ? " + " : " - ";
+                }
+
+                // Модуль коэффициента
+                result += Math.Abs(coef);
+
+                // Переменная и степень
                 if (degr > 0)
+                {
                     result += "x";
-                if (degr > 1)
-                    result += "^" + degr;
+                    if (degr > 1)
+                        result += "^" + degr;
+                }
             }
             return result;
         }
+        }
     }
-}
+    

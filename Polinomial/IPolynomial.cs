@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Polinomial
 {
-    internal interface IPolynomial
+     public interface IPolynomial
     {
        Element[] Elements { get; }
         Polynomial Add(Polynomial secondPolynomial);

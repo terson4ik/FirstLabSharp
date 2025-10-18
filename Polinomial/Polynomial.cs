@@ -54,7 +54,7 @@ namespace Polinomial
                 int min = i;
                 for (int j = i + 1; j < elements.Length; j++)
                 {
-                    if (elements[min].Degree < elements[j].Degree)
+                    if (elements[min].Degree > elements[j].Degree)
                         min = j;
                 }
                 if (i == min) continue; //nothing to do
@@ -137,7 +137,7 @@ namespace Polinomial
                 {
                     return elements[med].Coefficient;
                 }
-                else if (degree < elements[med].Degree )
+                else if (degree < elements[med].Degree)
                 {
                     left = med + 1;
                 }
@@ -148,9 +148,58 @@ namespace Polinomial
             }
             return 0.0;
         }
-        Polynomial IPolynomial.Add(Polynomial secondPolynomial)
+        public Polynomial Add(Polynomial SecondPolynomial)
         {
-            throw new NotImplementedException();
+            if (SecondPolynomial == null) throw new ArgumentNullException(nameof(SecondPolynomial));
+            int maxLen = this.elements.Length + SecondPolynomial.elements.Length;
+            Element[] tmp = new Element[maxLen];
+            int count = 0;
+            for (int i = 0; i < this.elements.Length; i++)
+            {
+                tmp[count] = this.elements[i];
+                count++;
+            }
+            for (int i = 0; i < SecondPolynomial.elements.Length; i++)
+            {
+                int degree = SecondPolynomial.elements[i].Degree;
+                double coeff = SecondPolynomial.elements[i].Coefficient;
+                bool found = false;
+                for (int j = 0; j < count; j++)
+                {
+                    if (tmp[j].Degree == degree)
+                    {
+                        tmp[j].Coefficient += coeff;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                {
+                    tmp[count].Degree = degree;
+                    tmp[count].Coefficient = coeff;
+                    count++;
+                }
+            }
+            int nonZeroCount = 0;
+            for (int i = 0; i < count; i++)
+            {
+                if(tmp[i].Coefficient != 0.0)
+                {
+                    nonZeroCount++;
+                }
+            }
+            double[,] pairs = new double[nonZeroCount,2];
+            int index = 0;
+            for (int i = 0; i < count; i++)
+            {
+                if (tmp[i].Coefficient != 0.0)
+                {
+                    pairs[index, 0] = tmp[i].Degree;
+                    pairs[index, 1] = tmp[i].Coefficient;
+                    index++;
+                }
+            }
+            return new Polynomial(pairs);
         }
 
         Polynomial IPolynomial.AddNumber(double num)

@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Polinomial;
+using System.Runtime;
 
 namespace PolinomialTests
 {
@@ -179,10 +180,60 @@ namespace PolinomialTests
         [TestMethod()]
         public void AddPositiveTest()
         {
+            // Arrange
+            const double FIRST_COEF_ONE = 5;
+            const double FIRST_COEF_TWO = 5;
+            const double SECOND_COEF_ONE = 10;
+            const double SECOND_COEF_TWO = 10;
+            const double THIRD_COEF_ONE = 15;
+            const double TARGET_COEF_ONE = FIRST_COEF_ONE + FIRST_COEF_TWO;
+            const double TARGET_COEF_TWO = SECOND_COEF_ONE + SECOND_COEF_TWO;
+            const double TARGET_COEF_THREE = THIRD_COEF_ONE;
+            const double TARGET_DEGR_ONE = 0;
+            const double TARGET_DEGR_TWO = 1;
+            const double TARGET_DEGR_THREE = 2;
+            const int TARGET_LENGTH = 3;
+
+            // Act
+            double[] coeffs1 = new double[] { FIRST_COEF_ONE, SECOND_COEF_ONE, THIRD_COEF_ONE };
+            double[] coeffs2 = new double[] { FIRST_COEF_TWO, SECOND_COEF_TWO };
+            Polynomial p1 = new Polynomial(coeffs1);
+            Polynomial p2 = new Polynomial(coeffs2);
+            Polynomial result = p1.Add(p2);
+
+            // Assert
+            Assert.AreEqual(TARGET_LENGTH, result.Elements.Length);
+            Assert.AreEqual(TARGET_COEF_ONE, result.Elements[0].Coefficient);
+            Assert.AreEqual(TARGET_COEF_TWO, result.Elements[1].Coefficient);
+            Assert.AreEqual(TARGET_COEF_THREE, result.Elements[2].Coefficient);
+            Assert.AreEqual(TARGET_DEGR_ONE, result.Elements[0].Degree);
+            Assert.AreEqual(TARGET_DEGR_TWO, result.Elements[1].Degree);
+            Assert.AreEqual(TARGET_DEGR_THREE, result.Elements[2].Degree);
         }
         [TestMethod()]
         public void AddNegativeTest()
         {
+            // Arrange
+            const double FIRST_COEF_ONE = 5;
+            const double FIRST_COEF_TWO = -5;
+            const double SECOND_COEF_ONE = 10;
+            const double SECOND_COEF_TWO = -10;
+            const double THIRD_COEF_ONE = 15;
+            const double TARGET_COEF_THREE = THIRD_COEF_ONE;
+            const double TARGET_DEGR_ONE = 2;
+            const int TARGET_LENGTH = 1;
+
+            // Act
+            double[] coeffs1 = new double[] { FIRST_COEF_ONE, SECOND_COEF_ONE, THIRD_COEF_ONE };
+            double[] coeffs2 = new double[] { FIRST_COEF_TWO, SECOND_COEF_TWO };
+            Polynomial p1 = new Polynomial(coeffs1);
+            Polynomial p2 = new Polynomial(coeffs2);
+            Polynomial result = p1.Add(p2);
+
+            // Assert
+            Assert.AreEqual(TARGET_LENGTH, result.Elements.Length);
+            Assert.AreEqual(TARGET_COEF_THREE, result.Elements[0].Coefficient);
+            Assert.AreEqual(TARGET_DEGR_ONE, result.Elements[0].Degree);
         }
 
         //11

@@ -404,27 +404,28 @@ namespace PolinomialTests
             Assert.ThrowsException<ArgumentNullException>(() => p1.Subtraction(p2));
         }
 
-        //17
-        [TestMethod()]
-        public void MultiplyByNumberDefoltTest ()
-        {
-        }
-
-        //19
-        [TestMethod()]
-        public void MultiplyByZeroNumberTest()
-        {
-        }
-
         //20
         [TestMethod()]
         public void AddNumberWithoutFreeMemberTest()
         {
+            const int 
         }
 
         //21
         [TestMethod()]
         public void AddNumberWithFreeMemberTest()
+        {
+        }
+
+        //16
+        [TestMethod()]
+        public void MultiplyByNumberDefoltTest ()
+        {
+        }
+
+        //18
+        [TestMethod()]
+        public void MultiplyByZeroNumberTest()
         {
         }
 

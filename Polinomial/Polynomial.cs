@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Runtime.Serialization.Formatters;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Schema;
+using System.Diagnostics;
+using System.Net.NetworkInformation;
 
 namespace Polinomial
 {
@@ -228,26 +222,107 @@ namespace Polinomial
             if (SecondPolynomial == null) throw new ArgumentNullException(nameof(SecondPolynomial));
             return ArithmeticWithPolynoms(SecondPolynomial, '-');
         }
-        Polynomial IPolynomial.AddNumber(double num)
+        
+        public Polynomial MultiplyByNumber(double num)
         {
-            throw new NotImplementedException();
+            if (num == 0.0) return new Polynomial();
+
+            Element[] newElements = new Element[elements.Length];
+            int count = 0;
+            for (int i = 0; i < elements.Length; i++)
+            {
+                double newCoef = elements[i].Coefficient * num;
+                if (newCoef != 0.0)
+                {
+                    newElements[count].Coefficient = newCoef;
+                    newElements[count].Degree = elements[i].Degree;
+                    count++;
+                }
+            }
+            double[,] pairs = new double[count, 2];
+            for (int i = 0; i < count; i++)
+            {
+                pairs[i, 0] = newElements[i].Degree;
+                pairs[i, 1] = newElements[i].Coefficient;
+            }
+            return new Polynomial(pairs);
+        }
+        public Polynomial AddNumber(double num)
+        {
+            if (num == 0.0) return new Polynomial(this);
+
+            Element[] newElements = new Element[elements.Length];
+            bool foundZeroDegree = false;
+            for (int i = 0; i < elements.Length; i++)
+            {
+                newElements[i] = elements[i];
+                if (elements[i].Degree == 0)
+                {
+                    newElements[i].Coefficient += num;
+                    foundZeroDegree = true;
+                    break;
+                }
+            }
+            if (!foundZeroDegree)
+            {
+                Element[] extended = new Element[newElements.Length + 1];
+                for (int i = 0; i < newElements.Length; i++)
+                {
+                    extended[i] = newElements[i];
+                }
+                extended[newElements.Length].Degree = 0;
+                extended[newElements.Length].Coefficient = num;
+                newElements = extended;
+            }
+            double[,] pairs = new double[newElements.Length, 2];
+            for (int i = 0; i < newElements.Length; i++)
+            {
+                pairs[i, 0] = newElements[i].Degree;
+                pairs[i, 1] = newElements[i].Coefficient;
+            }
+            return new Polynomial(pairs);
         }
 
-        double IPolynomial.CalculateValue(double value)
+        public double CalculateValue(double value)
         {
-            throw new NotImplementedException();
+            if (value == 0.0) return elements[0].Coefficient;
+
+            double res = 0;
+            for (int i = 0; i < elements.Length; i++)
+            {
+                double buf = 1;
+                for(int j = 0; j < elements[i].Degree; j++)
+                {
+                    buf *= value;
+                }
+                res += buf * elements[i].Coefficient;
+            }
+            return res;
         }
 
-        double IPolynomial.FindDerivative()
+        public Polynomial FindDerivative()
         {
-            throw new NotImplementedException();
-        }
+            if (elements.Length == 0) return new Polynomial();
 
-        Polynomial IPolynomial.MultiplyByNumber(double num)
-        {
-            throw new NotImplementedException();
-        }
+            Element[] deriv = new Element[elements.Length];
+            int count = 0;
+            for (int i = 0; i < elements.Length; i++)
+            {
+                if (elements[i].Degree == 0) continue;
+                deriv[count].Degree = elements[i].Degree - 1;
+                deriv[count].Coefficient = elements[i].Coefficient * elements[i].Degree;
+                count++;
+            }
+            if (count == 0) return new Polynomial();
 
+            double[,] pairs = new double[count, 2];
+            for (int i = 0; i < count; i++)
+            {
+                pairs[i, 0] = deriv[i].Degree;
+                pairs[i, 1] = deriv[i].Coefficient;
+            }
+            return new Polynomial(pairs);
+        }
        
         public override int GetHashCode()
         {

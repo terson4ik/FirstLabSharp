@@ -37,7 +37,7 @@ namespace Polinomial
             int index = 0;
             for (int i = 0; i < coefficients.Length; i++)
             {
-                
+
                 if (coefficients[i] != 0.0)
                 {
                     elements[index].Coefficient = coefficients[i];
@@ -46,31 +46,60 @@ namespace Polinomial
                 }
             }
         }
+
+        private void SortDegrees(Element[] elements) // sort for CORRECT degrees
+        {
+            for (int i = 0; i < elements.Length; i++)
+            {
+                int min = i;
+                for (int j = i + 1; j < elements.Length; j++)
+                {
+                    if (elements[min].Degree < elements[j].Degree)
+                        min = j;
+                }
+                if (i == min) continue; //nothing to do
+                Element temp = elements[i];
+                elements[i] = elements[min];
+                elements[min] = temp;
+            }
+        }
+
+        private void CopyDoubleArr(double[,] source, double[,] target)
+        {
+            for (int i = 0; i < source.GetLength(0); i++)
+            { // This was done so as not to spoil the original
+                for (int j = 0; j < source.GetLength(1); j++)
+                {
+                    target[i, j] = source[i, j];
+                }
+            }
+        }
+
+        private void FilterDublicatesDegreesDoubleArr(double[,] source)
+        {
+            for (int i = 0; i < source.GetLength(0); i++) 
+            {// Filter dublicate degrees
+                int tmpDegree = Convert.ToInt32(source[i, 0]);
+                for (int j = i + 1; j < source.GetLength(0); j++)
+                {
+                    int find = Convert.ToInt32(source[j, 0]);
+                    if (tmpDegree == find)
+                    {
+                        source[i, 1] += source[j, 1];
+                        source[j, 1] = 0; // Reset the repetion
+                    }
+                }
+            }
+
+        }
+
         public Polynomial(double[,] pairs) //expected [degree, coef.]
         {
             if (pairs == null) throw new ArgumentNullException(nameof(pairs));
             double[,] TemporaryArr = new double[pairs.GetLength(0), pairs.GetLength(1)];
-            for (int i = 0; i < pairs.GetLength(0); i++) // Copy all elements pairs into temp
-            { // This was done so as not to spoil the original
-                for (int j = 0; j < pairs.GetLength(1); j++)
-                {
-                    TemporaryArr[i, j] = pairs[i, j];
-                }
-            }
+            CopyDoubleArr(pairs, TemporaryArr);// Copy pairs into temp
+            FilterDublicatesDegreesDoubleArr(TemporaryArr);
             int rows = TemporaryArr.GetLength(0); // Used for cycles
-            for (int i = 0; i < rows; i++) // Filter dublicate degrees
-            {
-                int tmpDegree = Convert.ToInt32(TemporaryArr[i, 0]);
-                for (int j = i + 1; j < rows; j++)
-                {
-                    int find = Convert.ToInt32(TemporaryArr[j, 0]);
-                    if (tmpDegree == find)
-                    {
-                        TemporaryArr[i, 1] += TemporaryArr[j, 1];
-                        TemporaryArr[j, 1] = 0; // Reset the repetion
-                    }
-                }
-            }
             int count = 0;
             for (int i = 0; i < rows; i++)
             {
@@ -84,7 +113,7 @@ namespace Polinomial
             }
             elements = new Element[count];
             int index = 0;
-            for (int i = 0; i < rows; i++)
+            for (int i = 0; i < rows; i++) // Fill in the final struct
             {
                 int degree = Convert.ToInt32(TemporaryArr[i, 0]);
                 double coeff = TemporaryArr[i, 1];
@@ -93,30 +122,28 @@ namespace Polinomial
                 elements[index].Coefficient = coeff;
                 index++;
             }
-
-            for (int i = 0; i < elements.Length; i++)
-            { // sort for CORRECT degrees
-                int min = i;
-                for (int j = i + 1; j < elements.Length; j++)
-                {
-                    if (elements[min].Degree < elements[j].Degree)
-                        min = j;
-                }
-                if (i == min) continue; //nothing to do
-                Element temp = elements[i];
-                elements[i] = elements[min];
-                elements[min] = temp;
-                
-            }
+            SortDegrees(elements); // sort for CORRECT degrees
         }
-        
-        private double GetCoefByDegree(int degree)
+
+        private double GetCoefByDegree(Element[] elements, int degree)
         {
-            for (int i = 0; i < elements.Length; i++)
+            int left = 0;
+            int rigth = elements.Length - 1;
+            int med;
+            while (left <= rigth)
             {
-                if (elements[i].Degree == degree)
+                med = (left + rigth) / 2;
+                if (elements[med].Degree == degree)
                 {
-                    return elements[i].Coefficient;
+                    return elements[med].Coefficient;
+                }
+                else if (degree < elements[med].Degree )
+                {
+                    left = med + 1;
+                }
+                else
+                {
+                    rigth = med - 1;
                 }
             }
             return 0.0;

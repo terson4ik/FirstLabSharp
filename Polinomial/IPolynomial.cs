@@ -15,7 +15,7 @@ namespace Polinomial
         Polynomial MultiplyByNumber(double num);
         Polynomial AddNumber(double num);
         double CalculateValue(double value);
-        double FindDerivative();
-
+        Polynomial FindDerivative();
+        int GetHashCode();
     }
 }

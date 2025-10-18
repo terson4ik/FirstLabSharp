@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Net.NetworkInformation;
+using System.Data.Odbc;
+using System.Text;
 
 namespace Polinomial
 {
@@ -52,9 +52,7 @@ namespace Polinomial
                         min = j;
                 }
                 if (i == min) continue; //nothing to do
-                Element temp = elements[i];
-                elements[i] = elements[min];
-                elements[min] = temp;
+                (elements[min], elements[i]) = (elements[i], elements[min]);
             }
         }
 
@@ -323,18 +321,53 @@ namespace Polinomial
             }
             return new Polynomial(pairs);
         }
-       
-        public override int GetHashCode()
-        {
-            throw new NotImplementedException();
-        }
+
+
         public override bool Equals(object obj)
         {
-            throw new NotImplementedException();
+            if (obj == null || !(obj is Polynomial)) return false;
+            Polynomial other = (Polynomial)obj;
+            if (this.elements.Length != other.elements.Length) return false;
+            for (int i = 0; i < elements.Length; i++)
+            {
+                if ((this.elements[i].Degree != other.elements[i].Degree) ||
+                (this.elements[i].Coefficient != other.elements[i].Coefficient))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
+        public override int GetHashCode()
+        {
+            int hash = 17;
+            for (int i = 0; i < elements.Length; i++)
+            {
+                hash = hash * 31 + elements[i].Coefficient.GetHashCode();
+                hash = hash * 31 + elements[i].Degree.GetHashCode();
+            }
+            return hash;
+        }
+          
         public override string ToString()
         {
-            throw new NotImplementedException();
+            if (elements.Length == 0) return "0";
+            string result = "";
+            for (int i = 0; i < elements.Length; i++)
+            {
+                double coef = elements[i].Coefficient;
+                int degr = elements[i].Degree;
+                if ((i > 0) && (coef > 0))
+                    result += " + ";
+                else if (coef < 0)
+                    result += " - ";
+                result += coef;
+                if (degr > 0)
+                    result += "x";
+                if (degr > 1)
+                    result += "^" + degr;
+            }
+            return result;
         }
     }
 }

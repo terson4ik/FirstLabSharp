@@ -125,6 +125,15 @@ namespace Polinomial
             SortDegrees(elements); // sort for CORRECT degrees
         }
 
+        public Polynomial(Polynomial other)
+        {
+            if (other == null) throw new ArgumentNullException(nameof(other));
+            elements = new Element[other.elements.Length];
+            for (int i = 0; i < other.elements.Length; i++)
+            {
+                elements[i] = other.elements[i];
+            }
+        }
         private double GetCoefByDegree(Element[] elements, int degree)
         {
             int left = 0;
@@ -148,9 +157,8 @@ namespace Polinomial
             }
             return 0.0;
         }
-        public Polynomial Add(Polynomial SecondPolynomial)
+        private Polynomial ArithmeticWithPolynoms(Polynomial SecondPolynomial, char operation)
         {
-            if (SecondPolynomial == null) throw new ArgumentNullException(nameof(SecondPolynomial));
             int maxLen = this.elements.Length + SecondPolynomial.elements.Length;
             Element[] tmp = new Element[maxLen];
             int count = 0;
@@ -168,8 +176,16 @@ namespace Polinomial
                 {
                     if (tmp[j].Degree == degree)
                     {
-                        tmp[j].Coefficient += coeff;
-                        found = true;
+                        if (operation == '+')
+                        {
+                            tmp[j].Coefficient += coeff;
+                        }
+                        else if (operation == '-')
+                        {
+                            tmp[j].Coefficient -= coeff;
+
+                        }
+                            found = true;
                         break;
                     }
                 }
@@ -200,8 +216,18 @@ namespace Polinomial
                 }
             }
             return new Polynomial(pairs);
-        }
 
+        }
+        public Polynomial Add(Polynomial SecondPolynomial)
+        {
+            if (SecondPolynomial == null) throw new ArgumentNullException(nameof(SecondPolynomial));
+            return ArithmeticWithPolynoms(SecondPolynomial, '+');
+        }
+        public Polynomial Subtraction(Polynomial SecondPolynomial)
+        {
+            if (SecondPolynomial == null) throw new ArgumentNullException(nameof(SecondPolynomial));
+            return ArithmeticWithPolynoms(SecondPolynomial, '-');
+        }
         Polynomial IPolynomial.AddNumber(double num)
         {
             throw new NotImplementedException();
@@ -222,10 +248,7 @@ namespace Polinomial
             throw new NotImplementedException();
         }
 
-        Polynomial IPolynomial.Subtraction(Polynomial secondPolynomial)
-        {
-            throw new NotImplementedException();
-        }
+       
         public override int GetHashCode()
         {
             throw new NotImplementedException();

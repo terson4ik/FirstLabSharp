@@ -51,7 +51,6 @@ namespace Polinomial
                     if (elements[min].Degree > elements[j].Degree)
                         min = j;
                 }
-                if (i == min) continue; //nothing to do
                 (elements[min], elements[i]) = (elements[i], elements[min]);
             }
         }
@@ -126,32 +125,9 @@ namespace Polinomial
                 elements[i] = other.elements[i];
             }
         }
-        private double GetCoefByDegree(Element[] elements, int degree)
+        private IPolynomial ArithmeticWithPolynoms(Polynomial secondPolynomial, char operation)
         {
-            int left = 0;
-            int rigth = elements.Length - 1;
-            int med;
-            while (left <= rigth)
-            {
-                med = (left + rigth) / 2;
-                if (elements[med].Degree == degree)
-                {
-                    return elements[med].Coefficient;
-                }
-                else if (degree < elements[med].Degree)
-                {
-                    left = med + 1;
-                }
-                else
-                {
-                    rigth = med - 1;
-                }
-            }
-            return 0.0;
-        }
-        private IPolynomial ArithmeticWithPolynoms(Polynomial SecondPolynomial, char operation)
-        {
-            int maxLen = this.elements.Length + SecondPolynomial.elements.Length;
+            int maxLen = this.elements.Length + secondPolynomial.elements.Length;
             Element[] tmp = new Element[maxLen];
             int count = 0;
             for (int i = 0; i < this.elements.Length; i++)
@@ -159,10 +135,10 @@ namespace Polinomial
                 tmp[count] = this.elements[i];
                 count++;
             }
-            for (int i = 0; i < SecondPolynomial.elements.Length; i++)
+            for (int i = 0; i < secondPolynomial.elements.Length; i++)
             {
-                int degree = SecondPolynomial.elements[i].Degree;
-                double coeff = SecondPolynomial.elements[i].Coefficient;
+                int degree = secondPolynomial.elements[i].Degree;
+                double coeff = secondPolynomial.elements[i].Coefficient;
                 bool found = false;
                 for (int j = 0; j < count; j++)
                 {
@@ -210,16 +186,16 @@ namespace Polinomial
             return new Polynomial(pairs);
 
         }
-        public IPolynomial Add(IPolynomial SecondPolynomial)
+        public IPolynomial Add(IPolynomial secondPolynomial)
         {
-            Polynomial poly = SecondPolynomial as Polynomial;
-            if (poly == null) throw new ArgumentNullException(nameof(SecondPolynomial));
+            Polynomial poly = secondPolynomial as Polynomial;
+            if (poly == null) throw new ArgumentNullException(nameof(secondPolynomial));
             return ArithmeticWithPolynoms(poly, '+');
         }
-        public IPolynomial Subtraction(IPolynomial SecondPolynomial)
+        public IPolynomial Subtract(IPolynomial secondPolynomial)
         {
-            Polynomial poly = SecondPolynomial as Polynomial;
-            if (poly == null) throw new ArgumentNullException(nameof(SecondPolynomial));
+            Polynomial poly = secondPolynomial as Polynomial;
+            if (poly == null) throw new ArgumentNullException(nameof(secondPolynomial));
             return ArithmeticWithPolynoms(poly, '-');
         }
         
@@ -247,21 +223,46 @@ namespace Polinomial
             }
             return new Polynomial(pairs);
         }
+    private double GetCoefByDegree(Element[] elements, int degree)
+        {
+            int left = 0;
+            int right = elements.Length - 1;
+            int med;
+            while (left <= right)
+            {
+                med = (left + right) / 2;
+                if (elements[med].Degree == degree)
+                {
+                    return elements[med].Coefficient;
+                }
+                else if (degree < elements[med].Degree)
+                {
+                    right = med - 1;
+                }
+                else
+                {
+                    left = med + 1;
+                }
+            }
+            return 0.0;
+        }
         public IPolynomial AddNumber(double num)
         {
-            if (num == 0.0) return new Polynomial(this);
+           if (num == 0.0) return new Polynomial(this);
+
+            double zeroDegreeCoef = GetCoefByDegree(elements, 0);
+            bool foundZeroDegree = (zeroDegreeCoef != 0.0);
 
             Element[] newElements = new Element[elements.Length];
-            bool foundZeroDegree = false;
             for (int i = 0; i < elements.Length; i++)
             {
                 newElements[i] = elements[i];
                 if (elements[i].Degree == 0)
                 {
                     newElements[i].Coefficient += num;
-                    foundZeroDegree = true;
                 }
             }
+
             if (!foundZeroDegree)
             {
                 Element[] extended = new Element[newElements.Length + 1];
@@ -284,17 +285,13 @@ namespace Polinomial
 
         public double CalculateValue(double value)
         {
-            if (value == 0.0) return elements[0].Coefficient;
+            if (elements.Length == 0) return 0.0;
+            if (value == 0.0) return GetCoefByDegree(elements,0);
 
             double res = 0;
             for (int i = 0; i < elements.Length; i++)
             {
-                double buf = 1;
-                for(int j = 0; j < elements[i].Degree; j++)
-                {
-                    buf *= value;
-                }
-                res += buf * elements[i].Coefficient;
+                res += elements[i].Coefficient * Math.Pow(value, elements[i].Degree);
             }
             return res;
         }
@@ -331,8 +328,11 @@ namespace Polinomial
             if (this.elements.Length != other.elements.Length) return false;
             for (int i = 0; i < elements.Length; i++)
             {
-                if ((this.elements[i].Degree != other.elements[i].Degree) ||
-                (this.elements[i].Coefficient != other.elements[i].Coefficient))
+                int degree = this.elements[i].Degree;
+                double thisCoef = GetCoefByDegree(this.elements, degree);
+                double otherCoef = GetCoefByDegree(other.elements, degree);
+
+                if (thisCoef != otherCoef)
                 {
                     return false;
                 }
@@ -341,15 +341,15 @@ namespace Polinomial
         }
         public override int GetHashCode()
         {
-            int hash = 17;
+            int hash = -1246362126;
             for (int i = 0; i < elements.Length; i++)
             {
-                hash = hash * 31 + elements[i].Coefficient.GetHashCode();
-                hash = hash * 31 + elements[i].Degree.GetHashCode();
+                hash = hash * -1521134295 + elements[i].Coefficient.GetHashCode();
+                hash = hash * -1521134295 + elements[i].Degree.GetHashCode();
             }
             return hash;
         }
-          
+
         public override string ToString()
         {
             if (elements.Length == 0) return "0";
@@ -360,7 +360,6 @@ namespace Polinomial
                 int degr = elements[i].Degree;
                 if (coef == 0.0) continue;
 
-                // Первый элемент: просто знак если отрицательный
                 if (result == "")
                 {
                     if (coef < 0)
@@ -370,11 +369,13 @@ namespace Polinomial
                 {
                     result += coef > 0 ? " + " : " - ";
                 }
-
-                // Модуль коэффициента
-                result += Math.Abs(coef);
-
-                // Переменная и степень
+                if (coef == 1.0 || coef == -1.0)
+                {
+                    if (degr == 0)
+                        result += "1";
+                }
+                else
+                    result += coef > 0 ? coef : -coef;
                 if (degr > 0)
                 {
                     result += "x";
@@ -386,4 +387,3 @@ namespace Polinomial
         }
         }
     }
-    

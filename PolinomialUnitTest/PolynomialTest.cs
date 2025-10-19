@@ -1,8 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Polinomial;
-using System.Runtime;
-using System.Security.Cryptography;
 
 namespace PolinomialTests
 {
@@ -180,7 +178,7 @@ namespace PolinomialTests
         
         //10
         [TestMethod()]
-        public void ConstructorOfCopyDefoultTest()
+        public void ConstructorOfCopyDefaultTest()
         {
             // Arrange 
             const int FIRST_COEF = 5;
@@ -206,6 +204,7 @@ namespace PolinomialTests
             // Act & Assert
             Assert.ThrowsException<ArgumentNullException>(() => new Polynomial(p1), "Constructor should throw ArgumentNullException for NULL polynomial");
         }
+
         //12
         [TestMethod()]
         public void AddPositiveTest()
@@ -269,6 +268,7 @@ namespace PolinomialTests
         }
 
         //14
+        [TestMethod()]
         public void AddEmptyPolynomsTest()
         {
             // Arrange
@@ -311,7 +311,7 @@ namespace PolinomialTests
 
         //16
         [TestMethod()]
-        public void SubtractionDefoultTest()
+        public void SubtractDefaultTest()
         {
             // Arrange
             const double FIRST_COEF_ONE = 5;
@@ -327,7 +327,7 @@ namespace PolinomialTests
             double[] coeffs2 = new double[] { FIRST_COEF_TWO, SECOND_COEF_TWO };
             IPolynomial p1 = new Polynomial(coeffs1);
             IPolynomial p2 = new Polynomial(coeffs2);
-            IPolynomial result = p1.Subtraction(p2);
+            IPolynomial result = p1.Subtract(p2);
 
             // Assert
             Assert.AreEqual(TARGET_LENGTH, result.Elements.Length, "Length is not correct");
@@ -336,26 +336,26 @@ namespace PolinomialTests
 
         //17
         [TestMethod()]
-        public void SubstractionSameTest()
+        public void SubtractSameTest()
         {
             // Arrange
-            const double FIRST_COEF_ONE = 5;
-            const double FIRST_COEF_TWO = 5;
-            const double SECOND_COEF_ONE = 10;
-            const double SECOND_COEF_TWO = 10;
+            const double FIRST_COEF = 5;
+            const double FIRST_DEGR = 5;
             const int TARGET_LENGTH = 0;
 
             // Act
-            double[] coeffs1 = new double[] { FIRST_COEF_ONE, SECOND_COEF_ONE };
-            double[] coeffs2 = new double[] { FIRST_COEF_TWO, SECOND_COEF_TWO };
-            IPolynomial p1 = new Polynomial(coeffs1);
-            IPolynomial p2 = new Polynomial(coeffs2);
-            IPolynomial result = p1.Subtraction(p2);
+            double[] coeff = new double[] { FIRST_COEF, FIRST_DEGR };
+            IPolynomial p1 = new Polynomial(coeff);
+            IPolynomial p2 = new Polynomial(coeff);
+            IPolynomial result = p1.Subtract(p2);
 
             // Assert
             Assert.AreEqual(TARGET_LENGTH, result.Elements.Length, "Length is not correct");
         }
-        public void SubtractionEmptyPolynomsTest()
+
+        //18
+        [TestMethod()]
+        public void SubtractEmptyPolynomsTest()
         {
             // Arrange
             const double FIRST_COEF = 5;
@@ -370,7 +370,7 @@ namespace PolinomialTests
             double[] coeff = new double[] { FIRST_COEF, SECOND_COEF };
             IPolynomial p1 = new Polynomial(coeff);
             IPolynomial p2 = new Polynomial();
-            IPolynomial result = p1.Subtraction(p2);
+            IPolynomial result = p1.Subtract(p2);
 
             // Assert
             Assert.AreEqual(TARGET_LENGTH, result.Elements.Length, "Length is not correct");
@@ -380,9 +380,9 @@ namespace PolinomialTests
             Assert.AreEqual(TARGET_DEGR_TWO, result.Elements[1].Degree, "Second degree is not correct");
         }
         
-        //18
+        //19
         [TestMethod()]
-        public void SubtractionNullTest()
+        public void SubtractNullTest()
         {
             // Arange
             const double FIRST_COEF = 5;
@@ -392,10 +392,10 @@ namespace PolinomialTests
             Polynomial p2 = null;
 
             // Assert
-            Assert.ThrowsException<ArgumentNullException>(() => p1.Subtraction(p2), "Subtraction method should throw ArgumentNullException for NULL polynomial");
+            Assert.ThrowsException<ArgumentNullException>(() => p1.Subtract(p2), "Subtraction method should throw ArgumentNullException for NULL polynomial");
         }
 
-        //19
+        //20
         [TestMethod()]
         public void AddNumberWithoutFreeMemberTest()
         {
@@ -416,7 +416,7 @@ namespace PolinomialTests
             Assert.AreEqual(TARGET_NUM, res.Elements[0].Coefficient, "First coefficient is not correct");
             Assert.AreEqual(THIRD_COEF, res.Elements[1].Coefficient, "Second coefficient is not correct");
         }
-        //20
+        //21
         [TestMethod()]
         public void AddNumberWithFreeMemberTest()
         {
@@ -444,7 +444,7 @@ namespace PolinomialTests
             Assert.AreEqual(THIRD_COEF, res.Elements[1].Coefficient, "Second coefficient is not correct");
         }
 
-        //21
+        //22
         [TestMethod()]
         public void MultiplyByNumberDefoltTest ()
         {
@@ -469,7 +469,7 @@ namespace PolinomialTests
             Assert.AreEqual(THIRD_COEF * NUM, res.Elements[1].Coefficient, "Second coefficient is not correct");
         }
 
-        //22
+        //23
         [TestMethod()]
         public void MultiplyByZeroNumberTest()
         {
@@ -487,9 +487,9 @@ namespace PolinomialTests
             Assert.AreEqual(TARGET_LENGTH, res.Elements.Length, "Length is not correct");
         }
 
-        //23
+        //24
         [TestMethod()]
-        public void CalculateValueDefoultTest()
+        public void CalculateValueDefaultTest()
         {
             // Arrange
             const int FIRST_COEF = 5;
@@ -506,7 +506,7 @@ namespace PolinomialTests
             Assert.AreEqual(TARGET_NUM, res, "Calculated value is not correct");
         }
 
-        //24
+        //25
         [TestMethod()]
         public void CalculateValueWithZeroTest()
         {
@@ -525,9 +525,22 @@ namespace PolinomialTests
             Assert.AreEqual(TARGET_NUM, res, "Calculated value is not correct");
         }
 
-        //25
+        //26
         [TestMethod()]
-        public void FindDerivativeDefoultTest()
+        public void CalculateValueWithEmptyPolynomialTest()
+        {
+            const double X = 5; 
+            const double TARGET_NUM = 0;
+            // Act
+            IPolynomial p = new Polynomial();
+            double res = p.CalculateValue(X);
+            Assert.AreEqual(TARGET_NUM, res, "Calculated value is not correct");
+        }
+
+
+        //27
+        [TestMethod()]
+        public void FindDerivativeDefaultTest()
         {
             // Arrange
             const int FIRST_COEF = 5;
@@ -544,7 +557,7 @@ namespace PolinomialTests
             Assert.AreEqual(TARGET_DEGR, res.Elements[0].Degree, "First degree is not correct");
         }
 
-        //26
+        //28
         [TestMethod()]
         public void FindDerivativeConstTest()
         {
@@ -563,7 +576,7 @@ namespace PolinomialTests
             Assert.AreEqual(TARGET_LENGTH, res.Elements.Length, "Length is not correct");
         }
 
-        //27
+        //29
         [TestMethod()]
         public void EqualsSamePolynomsTest()
         {
@@ -580,19 +593,19 @@ namespace PolinomialTests
             Assert.IsTrue(p1.Equals(p2), "Polynomials should be equal");
         }
 
-        //28
+        //30
         [TestMethod()]
         public void EqualsDifferentsPolynomsTest()
         {
             // Arrange
-            const double FIRST_COEF_ONE = 5;
-            const double SECOND_COEF_ONE = 10;
-            const double FIRST_COEF_TWO = 3;
-            const double SECOND_COEF_TWO = 8;
+            const double FIRST_COEF = 10;
+            const double SECOND_COEF = 5;
+            const double FIRST_DEGR = 3;
+            const double SECOND_DEGR = 8;
 
             // Act
-            double[] coeffs1 = new double[] { FIRST_COEF_ONE, SECOND_COEF_ONE };
-            double[] coeffs2 = new double[] { FIRST_COEF_TWO, SECOND_COEF_TWO };
+            double[] coeffs1 = new double[] { FIRST_DEGR, FIRST_COEF };
+            double[] coeffs2 = new double[] { SECOND_DEGR, SECOND_COEF };
             IPolynomial p1 = new Polynomial(coeffs1);
             IPolynomial p2 = new Polynomial(coeffs2);
 
@@ -600,12 +613,14 @@ namespace PolinomialTests
             Assert.IsFalse(p1.Equals(p2), "Polynomials should not be equal");
         }
 
-        //29
+        //31
         [TestMethod()]
         public void EqualsNullTest()
         {
             // Arrange
             const double FIRST_COEF = 5;
+
+            // Act
             double[] coeffs = new double[] { FIRST_COEF };
             IPolynomial p1 = new Polynomial(coeffs);
             IPolynomial p2 = null;
@@ -614,12 +629,14 @@ namespace PolinomialTests
             Assert.IsFalse(p1.Equals(p2), "Polynomial should not be equal to null");
         }
 
-        //30
+        //32
         [TestMethod()]
         public void EqualsAnotherTypeTest()
         {
             // Arrange
             const double FIRST_COEF = 5;
+
+            // Act
             double[] coeffs = new double[] { FIRST_COEF };
             IPolynomial p1 = new Polynomial(coeffs);
             object p2 = new object();
@@ -628,17 +645,16 @@ namespace PolinomialTests
             Assert.IsFalse(p1.Equals(p2), "Polynomial should not be equal to object of another type");
         }
         
-
-        //31
+        //33
         [TestMethod()]
-        public void ToStringTest()
+        public void ToStringDefaultTest()
         {
             // Arrange
             const double FIRST_COEF = 5;
             const double SECOND_COEF = -3;
-            const double THIRD_COEF = 0;
+            const double THIRD_COEF = 1;
             const double FOURTH_COEF = 2;
-            const string TARGET_STRING = "5 - 3x + 2x^3";
+            const string TARGET_STRING = "5 - 3x + x^2 + 2x^3";
 
             // Act
             double[] coeffs = new double[] { FIRST_COEF, SECOND_COEF, THIRD_COEF, FOURTH_COEF }; // 5 - 3x + 2x^3
@@ -649,32 +665,79 @@ namespace PolinomialTests
             Assert.AreEqual(TARGET_STRING, res, "String representation is not correct");
         }
 
-        //32
+        //34
+        [TestMethod()]
+        public void ToStringNullPolynomialTest()
+        {
+            // Arrange & Act
+            IPolynomial p = null;
+            // Assert
+            Assert.ThrowsException<NullReferenceException>(() => p.ToString(), "ToString method should throw NullReferenceException for NULL polynomial");
+        }
+
+        //35
+        [TestMethod()]
+        public void ToStringEmptyCoeffTest()
+        {
+            // Arrange
+            const string TARGET_STRING = "0";
+
+            // Act
+            IPolynomial p = new Polynomial();
+            string res = p.ToString();
+
+            // Assert
+            Assert.AreEqual(TARGET_STRING, res, "String representation is not correct");
+        }
+
+        //36
+        [TestMethod()]
+        public void ToStringOneCoeffTest()
+        {
+            // Arrange
+            const double FIRST_COEF = 1;
+            const string TARGET_STRING = "1";
+
+            // Act
+            double[] coef = new double[] { FIRST_COEF };
+            IPolynomial p = new Polynomial(coef);
+            string res = p.ToString();
+
+            // Assert
+            Assert.AreEqual(TARGET_STRING, res, "String representation is not correct");
+        }
+        //37
         [TestMethod()]
         public void GetHashCodeSameTest()
         {
-            double[] coeffs = new double[] { 5, 10 };
+            // Arrange
+            const double FIRST_COEF = 10;
+            const double SECOND_COEF = 11;
+
+            // Act
+            double[] coeffs = new double[] { FIRST_COEF, SECOND_COEF };
             IPolynomial p1 = new Polynomial(coeffs);
             IPolynomial p2 = new Polynomial(coeffs);
+
+            // Assert
             Assert.AreEqual(p1.GetHashCode(), p2.GetHashCode(), "Hash codes should be equal");
         }
 
-        //33
+        //38
         [TestMethod()]
         public void GetHashCodeDifferentTest()
         {
             // Arrange
-            const double FIRST_COEF_ONE = 5;
-            const double SECOND_COEF_ONE = 10;
-            const double FIRST_COEF_TWO = 3;
-            const double SECOND_COEF_TWO = 8;
+            const double FIRST_COEF = 1;
+            const double SECOND_COEF = 10;
+            const double FIRST_DEGR = 4;
+            const double SECOND_DEGR = 23;
 
             // Act
-            double[] coeffs1 = new double[] { FIRST_COEF_ONE, SECOND_COEF_ONE };
-            double[] coeffs2 = new double[] { FIRST_COEF_TWO, SECOND_COEF_TWO };
+            double[] coeffs1 = new double[] { FIRST_DEGR, FIRST_COEF };
+            double[] coeffs2 = new double[] { SECOND_DEGR, SECOND_COEF };
             IPolynomial p1 = new Polynomial(coeffs1);
             IPolynomial p2 = new Polynomial(coeffs2);
-
             int hash1 = p1.GetHashCode();
             int hash2 = p2.GetHashCode();
 
@@ -682,18 +745,27 @@ namespace PolinomialTests
             Assert.AreNotEqual(hash1, hash2, "Hash codes should be different for different polynomials");
         }
 
-        //34
+        //39
         [TestMethod()]
         public void GetHashCodeAnotherTypeTest()
         {
             // Arrange
-            const double FIRST_COEF = 5;
-            double[] coeffs = new double[] { FIRST_COEF };
-            IPolynomial p1 = new Polynomial(coeffs);
+            const double FIRST_COEF = 10;
+            const double SECOND_COEF = 10;
+            const double FIRST_DEGR = 4;
+            const double SECOND_DEGR = 4;
+
+            // Act
+            double[] coeffs1 = new double[] { FIRST_DEGR, FIRST_COEF };
+            double[] coeffs2 = new double[] { SECOND_DEGR, SECOND_COEF };
+            IPolynomial p1 = new Polynomial(coeffs1);
             object p2 = new object();
 
-            // Act & Assert
-            Assert.IsFalse(p1.Equals(p2), "Polynomial should not be equal to object of another type");
+            int hash1 = p1.GetHashCode();
+            int hash2 = p2.GetHashCode();
+
+            // Assert
+            Assert.AreNotEqual(hash1, hash2, "Hash codes should be different for different types");
         }
     }
 }

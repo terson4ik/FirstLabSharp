@@ -10,12 +10,12 @@ namespace Polinomial
      public interface IPolynomial
     {
        Element[] Elements { get; }
-        Polynomial Add(Polynomial secondPolynomial);
-        Polynomial Subtraction(Polynomial secondPolynomial);
-        Polynomial MultiplyByNumber(double num);
-        Polynomial AddNumber(double num);
+        IPolynomial Add(IPolynomial secondPolynomial);
+        IPolynomial Subtraction(IPolynomial secondPolynomial);
+        IPolynomial MultiplyByNumber(double num);
+        IPolynomial AddNumber(double num);
         double CalculateValue(double value);
-        Polynomial FindDerivative();
+        IPolynomial FindDerivative();
         int GetHashCode();
     }
 }

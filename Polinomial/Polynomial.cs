@@ -149,7 +149,7 @@ namespace Polinomial
             }
             return 0.0;
         }
-        private Polynomial ArithmeticWithPolynoms(Polynomial SecondPolynomial, char operation)
+        private IPolynomial ArithmeticWithPolynoms(Polynomial SecondPolynomial, char operation)
         {
             int maxLen = this.elements.Length + SecondPolynomial.elements.Length;
             Element[] tmp = new Element[maxLen];
@@ -210,18 +210,20 @@ namespace Polinomial
             return new Polynomial(pairs);
 
         }
-        public Polynomial Add(Polynomial SecondPolynomial)
+        public IPolynomial Add(IPolynomial SecondPolynomial)
         {
-            if (SecondPolynomial == null) throw new ArgumentNullException(nameof(SecondPolynomial));
-            return ArithmeticWithPolynoms(SecondPolynomial, '+');
+            Polynomial poly = SecondPolynomial as Polynomial;
+            if (poly == null) throw new ArgumentNullException(nameof(SecondPolynomial));
+            return ArithmeticWithPolynoms(poly, '+');
         }
-        public Polynomial Subtraction(Polynomial SecondPolynomial)
+        public IPolynomial Subtraction(IPolynomial SecondPolynomial)
         {
-            if (SecondPolynomial == null) throw new ArgumentNullException(nameof(SecondPolynomial));
-            return ArithmeticWithPolynoms(SecondPolynomial, '-');
+            Polynomial poly = SecondPolynomial as Polynomial;
+            if (poly == null) throw new ArgumentNullException(nameof(SecondPolynomial));
+            return ArithmeticWithPolynoms(poly, '-');
         }
         
-        public Polynomial MultiplyByNumber(double num)
+        public IPolynomial MultiplyByNumber(double num)
         {
             if (num == 0.0) return new Polynomial();
 
@@ -245,7 +247,7 @@ namespace Polinomial
             }
             return new Polynomial(pairs);
         }
-        public Polynomial AddNumber(double num)
+        public IPolynomial AddNumber(double num)
         {
             if (num == 0.0) return new Polynomial(this);
 
@@ -297,7 +299,7 @@ namespace Polinomial
             return res;
         }
 
-        public Polynomial FindDerivative()
+        public IPolynomial FindDerivative()
         {
             if (elements.Length == 0) return new Polynomial();
 
